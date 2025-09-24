@@ -1,0 +1,20 @@
+<div >
+    <form>
+      <fieldset >
+        <legend >Login</legend>        
+        <div>
+            <input type="text" [(ngModel)]="userToRegister().email" placeholder="Mail" aria-label="email">
+        </div>
+        <div>
+            <input type="text" [(ngModel)]="passwordConfirm" placeholder="Password" aria-label="password">
+        </div>
+        <div>
+            <input type="text" [(ngModel)]="userToRegister().password" placeholder="confirm Password" aria-label="password">
+        </div>              
+                
+        <button (click)="register()">register</button>        
+      </fieldset>
+    </form>
+  </div>
+  
+  
