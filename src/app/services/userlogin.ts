@@ -1,21 +1,34 @@
-import { Injectable, Signal, signal } from '@angular/core';
-import { User } from '../../interfaces/user';
-import { JsonPipe } from '@angular/common';
+import { Injectable,  signal } from '@angular/core';
+import { LoggedUser, User } from '../../interfaces/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class Userlogin {
-  private connectedUser = signal<User>({email:"",password:""})
+  private connectedUserSignal = signal<LoggedUser|null>(null);
   private users = signal<User[]>([]); 
-  usersToComponent = this.users.asReadonly(); 
-
-  getUsers(): Signal<User[]> {
-    return this.usersToComponent;
+  
+  constructor(){
+    this.loadStoredData();
   }
 
-  getConnectedUser(){
-    return this.connectedUser;
+  private loadStoredData(){
+    const storedUser = sessionStorage.getItem('connectedUser');
+    if(storedUser) {
+      this.connectedUserSignal.set(JSON.parse(storedUser))
+    }
+    const storedUsers = localStorage.getItem("users");
+    if(storedUsers){
+      this.users.set(JSON.parse(storedUsers));
+    }
+  }
+
+  public get connectedUser() {
+    return this.connectedUserSignal.asReadonly();
+  }
+
+  public get isLoggedIn(){
+    return this.connectedUserSignal() !== null;
   }
 
   getUserByEmail(userEmail: string): User {
@@ -23,8 +36,17 @@ export class Userlogin {
     return this.users().find(user=>user.email==userEmail)!;
   }
 
-  register(user: User): boolean{    
+  register(user: User): boolean{ 
+    console.log("time to save users");
+    
+    if(this.users().find(u => u.email===user.email)){
+      console.log("seem to be such a user already"+user.email);
+      
+      return false;
+    }   
+
     this.users.update(users=>[...users,user])
+    this.saveUsers();
     return true;
   }
 
@@ -33,9 +55,16 @@ export class Userlogin {
   }
 
   login(userToConnect: User): boolean {
+    
     const userToCheck = this.getUserByEmail(userToConnect.email);
-    if(userToCheck.password==userToConnect.password){
-      sessionStorage.setItem('connectedUser',JSON.stringify(userToConnect.email))
+    if(!userToCheck){
+      return false;
+    }
+    else if(userToCheck.password==userToConnect.password){
+      const userStoreData: LoggedUser =  { email: userToConnect.email,
+        token: 'fake-jwt'+Date.now()
+      }
+      sessionStorage.setItem('connectedUser',JSON.stringify(userStoreData))
       return true;
     }
     else{

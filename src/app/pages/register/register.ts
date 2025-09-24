@@ -3,7 +3,7 @@ import { User } from '../../../interfaces/user';
 import { FormsModule } from '@angular/forms';
 import { Userlogin } from '../../services/userlogin';
 import { JsonPipe } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -11,21 +11,35 @@ import { RouterLink } from '@angular/router';
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
-export class Register {
-  isLoggedIn: Signal<Boolean> = signal(false);
-  userToRegister: Signal<User> = signal<User>({ email: '', password: '' });
-  passwordConfirm: Signal<string> = signal('');
-  private readonly userService: Userlogin = inject(Userlogin);
+export class Register {  
+  email = signal('');
+  password = signal('');
+  passwordConfirm = signal('');
+  
+  constructor(private readonly userService: Userlogin,
+    private readonly router: Router) {    
+  }
 
   OnSubmit() {
-    //On vérifie que le mail n'existe pas déjà
-    if (this.userService.getUserByEmail(this.userToRegister().email)) {
-      //TODO: afficher message d'alerte utilisateur existant
+      if (this.password() == this.passwordConfirm()) {
+        console.log(this.email());
+      const userToRegister: User = {email: this.email(), password: this.password()}        
+      this.userService.register(userToRegister)
     }
+  }
 
-    if (this.userToRegister().password == this.passwordConfirm()) {
-      this.userService.register(this.userToRegister());
-      this.userService.saveUsers();
-    }
+   updateEmail(event: Event) {
+    const target = event.target as HTMLInputElement;
+    this.email.set(target.value);
+  }
+
+  updatePassword(event: Event) {
+    const target = event.target as HTMLInputElement;
+    this.password.set(target.value);
+  }
+
+  updateConfirmPassword(event: Event) {
+    const target = event.target as HTMLInputElement;
+    this.passwordConfirm.set(target.value);
   }
 }

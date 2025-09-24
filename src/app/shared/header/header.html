@@ -2,8 +2,12 @@
     <nav>        
         <div class="nav-links"><a routerLink="/home">Home</a></div>
         <div class="nav-links"><a routerLink="/contact">Contact</a></div>
-        <div class="nav-links"><a routerLink="/profile">Profile</a></div>
-        <div class="nav-links"><a routerLink="/login">Login</a></div> 
-        <div class="nav-links"><a routerLink="/register">Register</a></div>        
-    </nav>
+        @if(isLoggedIn()){
+            <div class="nav-links"><a routerLink="/profile">Profile</a></div>
+        }                
+        @if(!isLoggedIn()){
+            <div class="nav-links"><a routerLink="/login">Login</a></div> 
+            <div class="nav-links"><a routerLink="/register">Register</a></div>        
+        }
+        </nav>
 </div>

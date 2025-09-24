@@ -1,5 +1,6 @@
 import { Component, computed, input, signal, Signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { Userlogin } from '../../services/userlogin';
 
 
 @Component({
@@ -10,5 +11,19 @@ import { RouterLink } from '@angular/router';
 })
 export class Header {
   userEmail=input<string | null>(null);
-  isLoggedIn = computed(()=>user.email!=null)
+  isLoggedIn = computed(()=>this.userEmail() !== null)
+  currentUserEmail = computed(()=> this.userEmail());
+
+
+  constructor(private readonly loginservice: Userlogin, private readonly router: Router){
+
+  }
+
+  logout(){
+    this.loginservice.logout();
+    this.router.navigate(["/login"])
+  }
+
+
+
 }

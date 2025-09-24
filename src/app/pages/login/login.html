@@ -1,12 +1,12 @@
 <div >
-    <form>
+    <form (ngSubmit)="login()">
       <fieldset >
         <legend >Login</legend>
         <div >
-          <input type="text" [(ngModel)]="connectedUser().email" placeholder="Mail" aria-label="email">
+          <input type="text" [value]="email()" (input)="updateEmail($event)" placeholder="Mail" aria-label="email">
         </div>        
-          <input type="text" [(ngModel)]="connectedUser().password" placeholder="Password" aria-label="password">        
-          <button class="uk-button uk-button-primary">Login</button>        
+          <input type="text" [value]="password()" (input)="updatePassword($event)" placeholder="Password" aria-label="password">        
+          <button class="uk-button uk-button-primary" type="submit">Login</button>        
       </fieldset>
     </form>
   </div>

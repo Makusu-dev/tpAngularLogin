@@ -1,18 +1,18 @@
 <div >
-    <form>
+    <form (ngSubmit)="OnSubmit()">
       <fieldset >
-        <legend >Login</legend>        
+        <legend >Register</legend>        
         <div>
-            <input type="text" [(ngModel)]="userToRegister().email" placeholder="Mail" aria-label="email">
+            <input type="text" [value]="email()" (input)="updateEmail($event)" placeholder="Mail" aria-label="email">
         </div>
         <div>
-            <input type="text" [(ngModel)]="passwordConfirm" placeholder="Password" aria-label="password">
+            <input type="text" [value]="password()" (input)="updatePassword($event)" placeholder="Password" aria-label="password">
         </div>
         <div>
-            <input type="text" [(ngModel)]="userToRegister().password" placeholder="confirm Password" aria-label="password">
-        </div>              
+            <input type="text" [value]="passwordConfirm()" (input)="updateConfirmPassword($event)" placeholder="confirm Password" aria-label="password">
+        </div> 
                 
-        <button (click)="register()">register</button>        
+        <button type="submit">register</button>        
       </fieldset>
     </form>
   </div>
