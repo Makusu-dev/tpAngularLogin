@@ -1,13 +1,13 @@
-<div >    
-    <nav>        
-        <div class="nav-links"><a routerLink="/home">Home</a></div>
-        <div class="nav-links"><a routerLink="/contact">Contact</a></div>
+<div class="navbar bg-base-100 shadow-sm" >              
+        <div><a class="btn btn-ghost text-xl" routerLink="/home">Home</a></div>
+        <div><a class="btn btn-ghost text-xl" routerLink="/contact">Contact</a></div>
+        <div><a class="btn btn-ghost text-xl" routerLink="/superheroes">SuperHeroes</a></div>
         @if(isLoggedIn()){
-            <div class="nav-links"><a routerLink="/profile">Profile</a></div>
+            <div><a class="btn btn-ghost text-xl" routerLink="/profile">Profile</a></div>
+            <div><a class="btn btn-ghost text-xl" (click)="logout()">Logout</a></div>
         }                
         @if(!isLoggedIn()){
-            <div class="nav-links"><a routerLink="/login">Login</a></div> 
-            <div class="nav-links"><a routerLink="/register">Register</a></div>        
+            <div ><a class="btn btn-ghost text-xl" routerLink="/login">Login</a></div> 
+            <div ><a class="btn btn-ghost text-xl" routerLink="/register">Register</a></div>        
         }
-        </nav>
 </div>

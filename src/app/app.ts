@@ -10,6 +10,7 @@ import { Userlogin } from './services/userlogin';
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
+
 export class App {
   protected readonly title = signal('tpLogin');
   isLoggedIn: Signal<Boolean> = signal(false);
@@ -17,12 +18,10 @@ export class App {
   connectedUserEmail = computed(()=>{
     const user=this.userService.connectedUser();
     return user ? user.email : null; 
-  })
-    
+  }) 
 
   constructor(private readonly userService: Userlogin){
     console.log(this.isLoggedIn());    
-  }
-  
-  
+  }    
+
 }

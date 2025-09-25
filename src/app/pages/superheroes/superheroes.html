@@ -1,0 +1,18 @@
+<div class="card-con">
+  @for(hero of superHeroes(); track hero.id){
+  <div class="card bg-base-100 w-96 shadow-sm">
+    <figure>
+      <img src="{{ hero.images.sm }}" alt="image of superhero" />
+    </figure>
+    <div class="card-body">
+      <h2 class="card-title">{{ hero.name }}</h2>
+      <p>{{ hero.biography.firstAppearance }}</p>
+      <div class="card-actions justify-end">
+        <button (click)="openHeroPage(hero.id)" class="btn btn-primary">Detail</button>
+      </div>
+    </div>
+  </div>
+  } @empty {
+  <li>Heroes are all dead</li>
+  }
+</div>

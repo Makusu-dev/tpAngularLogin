@@ -13,16 +13,22 @@ import { Router } from '@angular/router';
 export class Login {
   email = signal('');
   password = signal('');
+  errorMessage = signal('');
   // userToConnect: Signal<User>=signal<User>({email:"",password:""});
   // private readonly userService: Userlogin = inject(Userlogin);
 
   constructor(private readonly userService: Userlogin, private readonly router: Router){
-
   }
 
   login() {
-    const userToConnect : User = {email: this.email(), password: this.password()}
-    this.userService.login(userToConnect)
+    const userToConnect : User = {email: this.email(), password: this.password(),roles: []}
+    const loginSuccess = this.userService.login(userToConnect)
+    if(loginSuccess){
+      this.router.navigate(['/profile']);
+    }
+    else {
+      this.errorMessage.set('Email ou mot de passe incorrect');
+    }
   }
 
   updateEmail(event: Event) {

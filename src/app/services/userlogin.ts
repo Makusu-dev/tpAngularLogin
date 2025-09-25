@@ -53,26 +53,51 @@ export class Userlogin {
   saveUsers() {
     localStorage.setItem('users', JSON.stringify(this.users()))
   }
-
+ //################################ LOGIN/LOGOUT ###############################
   login(userToConnect: User): boolean {
     
     const userToCheck = this.getUserByEmail(userToConnect.email);
+
+    console.log("User has been found : " + userToCheck.email);
+    
+
     if(!userToCheck){
-      return false;
+      console.log("No such user");
+      return false;     
     }
     else if(userToCheck.password==userToConnect.password){
+      console.log("password is ok");
+      //ATTENTION: ici il faut stocker le isAdmin de userToCheck parce que
+      // l'information sur le role est récupérée lors du getUser
       const userStoreData: LoggedUser =  { email: userToConnect.email,
-        token: 'fake-jwt'+Date.now()
+        token: 'fake-jwt'+Date.now(), roles: userToCheck.roles
       }
       sessionStorage.setItem('connectedUser',JSON.stringify(userStoreData))
+      this.connectedUserSignal.set(userStoreData);
       return true;
     }
     else{
+      console.log("password doesn't seem right");      
       return false
     }
   }
 
   logout(){
-    sessionStorage.removeItem('connectedUser')
+    sessionStorage.removeItem('connectedUser');
+    this.connectedUserSignal.set(null);
   }
+
+  //########################################## ROLES ######################################
+
+  hasRole(requiredRole: string){
+    if(this.connectedUser()?.roles.find(el => el == requiredRole)!==undefined){
+      return true
+    }
+    else{
+      return 
+    }
+  }
+
+
+
 }

@@ -15,6 +15,7 @@ export class Register {
   email = signal('');
   password = signal('');
   passwordConfirm = signal('');
+  errorMessage = signal('');
   
   constructor(private readonly userService: Userlogin,
     private readonly router: Router) {    
@@ -23,8 +24,15 @@ export class Register {
   OnSubmit() {
       if (this.password() == this.passwordConfirm()) {
         console.log(this.email());
-      const userToRegister: User = {email: this.email(), password: this.password()}        
-      this.userService.register(userToRegister)
+      const userToRegister: User = {email: this.email(), password: this.password(), roles: ['ADMIN']}        
+      const register = this.userService.register(userToRegister)
+
+      if(register){
+        this.router.navigate(["/login"])
+      }
+      else {
+        this.errorMessage.set('Email ou mot de passe incorrect');
+      }
     }
   }
 
